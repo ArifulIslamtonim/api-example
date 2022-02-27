@@ -1,18 +1,7 @@
- document.getElementById('error-message').style.display = 'none';
- document.getElementById('spainer').style.display = 'none';
-//  document.getElementById('meal-details').style.display = 'block';
- document.getElementById('search-result').style.display = 'block';
-
-//  const toggleSpainer = displayStyle =>
-
 const searchFood = () => {
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
     searchField.value = '';
-
-    document.getElementById('spainer').style.display = 'block';
-    document.getElementById('search-result').style.display = 'none';
-
     if(searchText == '') {
        alert('please write something');
     }
@@ -22,18 +11,15 @@ const searchFood = () => {
         // console.log(url);
         .then(res => res.json())
         .then(data => displaySearchResult(data.meals))
-        .catch(error => displayError(error))
     }
-}
-const displayError = error => {
-    document.getElementById('error-message').style.display = 'block';
+   
 }
 
 const displaySearchResult = meals => {
     const searchResult = document.getElementById('search-result');
     searchResult.textContent = '';
     if(meals.length == 0){
-    
+        
     }
     meals.forEach(meal => {
         // console.log(meal);
@@ -50,15 +36,17 @@ const displaySearchResult = meals => {
         `;
         searchResult.appendChild(div);
     })
-    document.getElementById('spainer').style.display = 'none';
-    document.getElementById('search-result').style.display = 'block';
 }
-const loadMealDetail = mealId => {
+const loadMealDetail = async mealId => {
     // console.log(mealId);
     const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`;
-    fetch(url)
-    .then(res => res.json())
-    .then(data => displayMealDetail(data.meals[0]));
+
+    const res = await fetch(url);
+    const data = await res.json();
+    displayMealDetail(data.meals[0]);
+    // fetch(url)
+    // .then(res => res.json())
+    // .then(data => displayMealDetail(data.meals[0]));
 
 }
 
